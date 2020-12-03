@@ -19,8 +19,7 @@ int main(){
 		for(auto c3:s){
 			if(c3==c) times++;
 		}
-		if(times>=l1 && times<=l2) ans++;
-	}
+		if(times>=l1 && times<=l2) ans++;	}
 
 	cout<<ans<<endl;
 
