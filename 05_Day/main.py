@@ -26,4 +26,5 @@ for pas in input:
 	lc=int(lc)
 	rc=int(rc)
 	m=max(m,ur*8+rc)
+	
 print(m)
