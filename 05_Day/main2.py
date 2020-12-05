@@ -25,5 +25,16 @@ for pas in input:
 	lr=int(lr)
 	lc=int(lc)
 	rc=int(rc)
-	m=max(m,ur*8+rc)
-print(m)
+	seats[ur][rc]=False
+
+print()
+for row in range(0,128):
+	print("%4s" % (str(row))	,end="")
+	for seat in range(0,8):
+		if seats[row][seat]:
+			print(colored("%7s"%(str(seats[row][seat])),"green"),end="")
+		else:
+			print(colored("%7s"%(str(seats[row][seat])),"red"),end="")
+
+	print()
+print()
