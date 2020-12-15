@@ -9,8 +9,7 @@ def apply_mask(address):
 	base_mask = ""
 	binary_address = bin(address)[2:]
 	binary_address = "0"*(36-len(binary_address))+binary_address
-	for bit in range(0,36):
-		base_mask+= (binary_address[bit] if mask[bit] == '0' else mask[bit])
+	base_mask = [ (binary_address[index] if mask[index]=='0' else mask[index]) for index in range(0,36)]
 
 	for bit in base_mask:
 		add2 = []
