@@ -20,7 +20,6 @@ def computeOperations(string):
 		string.insert(0,str(result))
 	return string[0]
 
-
 def computeParentesis(string):
 	last_open = -1
 	last_close = -1
