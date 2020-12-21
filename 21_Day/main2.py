@@ -1,47 +1,27 @@
-from collections import defaultdict
-
 input = [line for line in open("input.txt").read().splitlines()]
 
 all_ingredients = set()
-all_allergens = set()
 
-posible_ingredients = defaultdict(lambda : -1)
+possibly_contained = {}
 
 for food in input:
-	ingredients = food.split(" (contains ")[0].split(" ")
-	allergens = food.split(" (contains ")[1][:-1].split(", ")
+	ingredients, allergens = food[:-1].split(" (contains ")
+	ingredients = ingredients.split(" ")
+	allergens = allergens.split(", ")
 
-	all_ingredients = all_ingredients.union(ingredients)
-	all_allergens = all_allergens.union(allergens)
+	all_ingredients.update(ingredients)
 
 	for allergen in allergens:
-		if posible_ingredients[allergen] == -1:
-			posible_ingredients[allergen] = set(ingredients)
+		if not allergen in possibly_contained:
+			possibly_contained[allergen] = set(ingredients)
 		else:
-			posible_ingredients[allergen] = posible_ingredients[allergen].intersection(set(ingredients))
+			possibly_contained[allergen] = possibly_contained[allergen].intersection(set(ingredients))
 
-ingredients_with_allergens = set()
-for k in posible_ingredients.keys():
-	ingredients_with_allergens = ingredients_with_allergens.union(posible_ingredients[k])
-ingredients_without_allergens = all_ingredients-ingredients_with_allergens
+while any([(len(v)-1) for k,v in possibly_contained.items()]):
+	for k,v in possibly_contained.items():
+		if len(v)==1:
+			for k2,v2 in possibly_contained.items():
+				if k2 != k:
+					possibly_contained[k2] = {i for i in v2 if not i in v}
 
-while True:
-	done = True
-	for allergen in posible_ingredients.keys():
-		ingredient = posible_ingredients[allergen]
-		if len(ingredient) == 1:
-			ingredient = list(ingredient)[0]
-			for allergen2 in posible_ingredients.keys():
-				if allergen2!=allergen and (ingredient in posible_ingredients[allergen2]):
-					posible_ingredients[allergen2].remove(ingredient)
-					done = False
-	if done:
-		break
-
-ordered = list(posible_ingredients.keys())
-ordered.sort()
-for k in ordered:
-	print(list(posible_ingredients[k])[0],end="")
-	if k!= ordered[-1]:
-		print(",",end="")
-print()
+print(",".join([list(possibly_contained[k])[0] for k in sorted(possibly_contained.keys())]))
